@@ -126,16 +126,16 @@ export interface OpenAIOptions {
 }
 
 export const SUPPORTED_MODELS = [
-  "gpt-4.1-mini",
   "gpt-4.1", 
+  "gpt-4.1-mini",
   "gpt-4o",
   "gpt-4o-mini"
 ] as const;
 
 export const SUPPORTED_SIZES = [
   "1024x1024",
-  "1024x1536", 
-  "1536x1024"
+  "1024x1792", 
+  "1792x1024"
 ] as const;
 
 export const SUPPORTED_QUALITIES = [
