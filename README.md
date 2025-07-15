@@ -1,0 +1,155 @@
+# MCP OpenAI Image Generation Server
+
+A Model Context Protocol (MCP) server that integrates with OpenAI's image generation API to create, edit, and stream images. Images are automatically saved to the Desktop for easy access by AI applications.
+
+## Features
+
+- **Image Generation**: Create images using OpenAI's GPT-Image-1 model
+- **Multi-turn Editing**: Edit existing images using conversation history
+- **Streaming Support**: Real-time partial image generation
+- **Desktop Integration**: Automatic saving to `~/Desktop`
+- **Internal Configuration**: Secure API key management
+- **STDIO Transport**: Runs over standard input/output
+
+## Installation
+
+```bash
+npm install
+npm run build
+```
+
+## Usage
+
+### Development
+```bash
+npm run dev
+```
+
+### Production
+```bash
+npm run build
+npm start
+```
+
+## Configuration
+
+The server manages its own configuration internally. On first use, configure your OpenAI API key:
+
+```json
+{
+  "name": "configure-server",
+  "arguments": {
+    "apiKey": "sk-your-openai-api-key",
+    "organization": "optional-org-id",
+    "model": "gpt-4.1-mini"
+  }
+}
+```
+
+## Available Tools
+
+### 1. generate-image
+Generate images using OpenAI's image generation API.
+
+**Parameters:**
+- `prompt` (required): Image description
+- `size`: Image dimensions (1024x1024, 1024x1536, 1536x1024)
+- `quality`: Image quality (low, medium, high, auto)
+- `format`: Output format (png, jpeg, webp)
+- `background`: Background setting (transparent, opaque, auto)
+- `compression`: Compression level for JPEG/WebP (0-100)
+
+### 2. configure-server
+Configure OpenAI API settings and credentials.
+
+**Parameters:**
+- `apiKey` (required): OpenAI API key
+- `organization`: OpenAI organization ID
+- `model`: Model to use (gpt-4.1-mini, gpt-4.1, gpt-4o, gpt-4o-mini)
+
+### 3. edit-image
+Edit existing images using previous response ID.
+
+**Parameters:**
+- `editPrompt` (required): Edit instructions
+- `previousResponseId`: Previous response ID for multi-turn editing
+- `imageId`: Specific image ID to edit
+
+### 4. stream-image
+Generate images with streaming for faster feedback.
+
+**Parameters:**
+- `prompt` (required): Image description
+- `partialImages`: Number of partial images (1-3)
+- `size`: Image dimensions
+
+### 5. get-config-status
+Check current configuration status.
+
+### 6. list-supported-models
+List all supported OpenAI models for image generation.
+
+## File Management
+
+- Images are saved to `~/Desktop` with unique filenames
+- Metadata is stored in JSON sidecar files
+- Automatic cleanup of old images (keeps last 50)
+- Naming convention: `openai-image-{timestamp}-{randomId}.{extension}`
+
+## Error Handling
+
+The server provides comprehensive error handling with:
+- Configuration validation
+- API key verification
+- Network error recovery
+- File system error handling
+- Helpful error messages and suggestions
+
+## Security
+
+- API keys are stored securely in internal configuration
+- No logging of sensitive information
+- Validation of all inputs
+- Secure file system operations
+
+## Development
+
+### Project Structure
+```
+src/
+├── index.ts            # Main entry point
+├── server.ts           # MCP server implementation
+├── config-manager.ts   # Configuration management
+├── image-generator.ts  # OpenAI API integration
+├── file-manager.ts     # Desktop file operations
+└── types.ts           # TypeScript definitions
+```
+
+### Building
+```bash
+npm run build
+```
+
+### Testing
+```bash
+npm test
+```
+
+## Requirements
+
+- Node.js 18+
+- OpenAI API key
+- Write permissions to Desktop
+- Network access to OpenAI API
+
+## Important Notice
+
+**⚠️ BILLING WARNING ⚠️**
+
+OpenAI bills for all successful API requests, even if technical issues with this MCP server prevent the delivery of usable results. This means you may be charged by OpenAI even when the MCP server fails to generate or save images properly due to bugs, configuration issues, or other technical problems. We do not guarantee or take responsibility for any costs that may be incurred through the use of this MCP server. Use at your own risk.
+
+Please monitor your OpenAI API usage and billing to avoid unexpected charges.
+
+## License
+
+MIT
