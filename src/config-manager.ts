@@ -1,13 +1,19 @@
 import { promises as fs } from 'fs';
-import { join } from 'path';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
 import { Config, ConfigStatus, SUPPORTED_MODELS } from './types.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 export class ConfigManager {
   private configPath: string;
   private config: Config | null = null;
 
   constructor() {
-    this.configPath = join(process.cwd(), 'config', 'server-config.json');
+    // Use the directory where the executable is located, not process.cwd()
+    const projectRoot = join(__dirname, '..');
+    this.configPath = join(projectRoot, 'config', 'server-config.json');
   }
 
   async loadConfig(): Promise<Config> {
@@ -30,7 +36,8 @@ export class ConfigManager {
   async saveConfig(config: Config): Promise<void> {
     try {
       // Ensure config directory exists
-      await fs.mkdir(join(process.cwd(), 'config'), { recursive: true });
+      const projectRoot = join(__dirname, '..');
+      await fs.mkdir(join(projectRoot, 'config'), { recursive: true });
       
       config.updatedAt = new Date().toISOString();
       await fs.writeFile(this.configPath, JSON.stringify(config, null, 2));

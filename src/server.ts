@@ -391,7 +391,9 @@ export class MCPImageServer {
   }
 
   private async handleGetConfigStatus(args: any): Promise<CallToolResult> {
+    console.error('Getting configuration status...');
     const status = await this.configManager.getConfigStatus();
+    console.error('Configuration status response:', JSON.stringify(status, null, 2));
 
     return {
       content: [{
@@ -425,9 +427,16 @@ export class MCPImageServer {
 
   async run(): Promise<void> {
     try {
+      // Add debugging for configuration loading
+      console.error('Loading configuration...');
+      const status = await this.configManager.getConfigStatus();
+      console.error('Configuration status:', JSON.stringify(status, null, 2));
+      
       // Minimal startup - just connect the server
       const transport = new StdioServerTransport();
+      console.error('Starting MCP server...');
       await this.server.connect(transport);
+      console.error('MCP server started successfully');
     } catch (error) {
       console.error('Server startup error:', error);
       throw error;

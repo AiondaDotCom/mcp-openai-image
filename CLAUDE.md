@@ -82,3 +82,36 @@ npm start
 
 ### Als MCP-Server verwenden
 Der Server kann als MCP-Server in kompatiblen Anwendungen verwendet werden.
+
+## Desktop Extension (DXT) Release erstellen
+
+Dieses Projekt unterstützt das Anthropic Desktop Extension Format (.dxt), das eine Ein-Klick-Installation in Claude Desktop ermöglicht.
+
+### Voraussetzungen
+- DXT Tool installiert: `npm install -g @anthropic-ai/dxt`
+- Projekt muss kompiliert sein
+
+### DXT Release erstellen
+
+1. **Code kompilieren**
+   ```bash
+   npm run build
+   ```
+
+2. **DXT Paket erstellen**
+   ```bash
+   dxt pack
+   ```
+
+Das Tool erstellt automatisch eine `.dxt` Datei (z.B. `mcp-openai-image-1.0.2.dxt`) mit:
+- Kompiliertem TypeScript Code (`build/` Verzeichnis)
+- Allen Abhängigkeiten (`node_modules/`)
+- Manifest-Datei (`manifest.json`)
+- Dokumentation und Konfigurationsdateien
+
+### Installation der DXT-Datei
+1. `.dxt` Datei herunterladen
+2. Doppelklick zum Öffnen mit Claude Desktop
+3. "Install" klicken
+
+Keine weitere Konfiguration erforderlich - alle Abhängigkeiten sind bereits im Paket enthalten.
