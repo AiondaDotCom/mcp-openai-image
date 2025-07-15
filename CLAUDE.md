@@ -66,6 +66,9 @@ Das Projekt verwendet standardmäßig `gpt-4.1` für die Bildgenerierung, da die
 ### Logging
 Der Server protokolliert wichtige Ereignisse in der Konsole. Überprüfen Sie die Ausgabe auf Fehler oder Warnungen.
 
+### Dateien auf dem Desktop
+Der Server speichert nur Bilddateien auf dem Desktop. Metadaten werden ausschließlich in der MCP-Response zurückgegeben und nicht als separate JSON-Dateien gespeichert.
+
 ## Sicherheit
 
 - API-Schlüssel werden lokal in `config/server-config.json` gespeichert

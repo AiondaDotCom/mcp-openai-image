@@ -31,10 +31,7 @@ export class FileManager {
 
       await fs.writeFile(filePath, imageBuffer);
 
-      // Save metadata as sidecar file
-      await this.saveMetadata(filePath, metadata);
-
-      // Image saved successfully - no console output needed
+      // Image saved successfully - metadata is returned in response, no need to save as file
 
       return filePath;
     } catch (error) {
@@ -50,14 +47,6 @@ export class FileManager {
     return `openai-image-${timestamp}-${randomId}.${extension}`;
   }
 
-  async saveMetadata(filePath: string, metadata: ImageMetadata): Promise<void> {
-    try {
-      const metadataPath = filePath.replace(/\.[^/.]+$/, '.json');
-      await fs.writeFile(metadataPath, JSON.stringify(metadata, null, 2));
-    } catch (error) {
-      // Non-fatal error - metadata save failed but continue
-    }
-  }
 
   getDesktopPath(): string {
     return this.desktopPath;
@@ -96,15 +85,6 @@ export class FileManager {
     }
   }
 
-  async loadMetadata(imagePath: string): Promise<ImageMetadata | null> {
-    try {
-      const metadataPath = imagePath.replace(/\.[^/.]+$/, '.json');
-      const data = await fs.readFile(metadataPath, 'utf-8');
-      return JSON.parse(data);
-    } catch (error) {
-      return null;
-    }
-  }
 
   async cleanupOldImages(keepCount: number = 50): Promise<void> {
     try {
@@ -116,14 +96,6 @@ export class FileManager {
       for (const imagePath of toDelete) {
         try {
           await fs.unlink(imagePath);
-          
-          // Also delete metadata file if it exists
-          const metadataPath = imagePath.replace(/\.[^/.]+$/, '.json');
-          try {
-            await fs.unlink(metadataPath);
-          } catch (error) {
-            // Metadata file might not exist, ignore
-          }
         } catch (error) {
           // Failed to delete old image - continue cleanup
         }
