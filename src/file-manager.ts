@@ -26,7 +26,7 @@ export class FileManager {
       
       // Check if image is too large (> 50MB)
       if (imageBuffer.length > 50 * 1024 * 1024) {
-        console.warn(`Large image detected (${Math.round(imageBuffer.length / 1024 / 1024)}MB). This may take some time to save.`);
+        // Large image warning - but continue processing
       }
 
       await fs.writeFile(filePath, imageBuffer);
@@ -34,8 +34,7 @@ export class FileManager {
       // Save metadata as sidecar file
       await this.saveMetadata(filePath, metadata);
 
-      // Log successful save
-      console.log(`Image saved successfully: ${fileName} (${Math.round(imageBuffer.length / 1024)}KB)`);
+      // Image saved successfully - no console output needed
 
       return filePath;
     } catch (error) {
@@ -56,8 +55,7 @@ export class FileManager {
       const metadataPath = filePath.replace(/\.[^/.]+$/, '.json');
       await fs.writeFile(metadataPath, JSON.stringify(metadata, null, 2));
     } catch (error) {
-      // Non-fatal error - log but don't throw
-      console.error('Failed to save metadata:', error);
+      // Non-fatal error - metadata save failed but continue
     }
   }
 
@@ -93,7 +91,7 @@ export class FileManager {
         .map(file => join(this.desktopPath, file))
         .sort((a, b) => b.localeCompare(a)); // Sort by name (newer first due to timestamp)
     } catch (error) {
-      console.error('Failed to get image history:', error);
+      // Failed to get image history - return empty array
       return [];
     }
   }
@@ -127,11 +125,11 @@ export class FileManager {
             // Metadata file might not exist, ignore
           }
         } catch (error) {
-          console.error(`Failed to delete old image: ${imagePath}`, error);
+          // Failed to delete old image - continue cleanup
         }
       }
     } catch (error) {
-      console.error('Failed to cleanup old images:', error);
+      // Failed to cleanup old images - not critical
     }
   }
 

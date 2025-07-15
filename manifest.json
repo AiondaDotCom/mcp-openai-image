@@ -1,0 +1,58 @@
+{
+  "dxt_version": "0.1",
+  "name": "mcp-openai-image",
+  "version": "1.0.2",
+  "description": "MCP server for OpenAI image generation using GPT-4.1, supporting creation, editing, and streaming",
+  "author": {
+    "name": "aionda.com",
+    "url": "https://aionda.com"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/aiondadotcom/mcp-openai-image",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aiondadotcom/mcp-openai-image.git"
+  },
+  "icon": "logo.png",
+  "keywords": [
+    "openai",
+    "gpt-4.1",
+    "image-generation",
+    "ai",
+    "mcp",
+    "image-editing",
+    "streaming"
+  ],
+  "server": {
+    "type": "node",
+    "entry_point": "build/index.js",
+    "mcp_config": {
+      "command": "node",
+      "args": ["${__dirname}/build/index.js"],
+      "env": {
+        "MCP_SILENT": "true"
+      }
+    }
+  },
+  "user_config": {
+    "api_key": {
+      "type": "string",
+      "title": "OpenAI API Key",
+      "description": "Your OpenAI API key (starts with sk-)",
+      "required": true
+    },
+    "organization": {
+      "type": "string", 
+      "title": "OpenAI Organization ID",
+      "description": "Your OpenAI organization ID (required for image generation)",
+      "required": true
+    },
+    "model": {
+      "type": "string",
+      "title": "Model",
+      "description": "Model to use for image generation (uses GPT-4.1 internally)",
+      "default": "gpt-4.1",
+      "required": false
+    }
+  }
+}

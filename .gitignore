@@ -43,3 +43,6 @@ coverage/
 # API keys and secrets
 api-keys.json
 secrets.json
+
+# DXT build
+*.dxt

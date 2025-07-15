@@ -424,30 +424,13 @@ export class MCPImageServer {
   }
 
   async run(): Promise<void> {
-    // Check if desktop is accessible
     try {
-      await this.fileManager.ensureDesktopExists();
-      console.error('Desktop access confirmed');
+      // Minimal startup - just connect the server
+      const transport = new StdioServerTransport();
+      await this.server.connect(transport);
     } catch (error) {
-      console.error('Warning: Desktop access issue:', error);
+      console.error('Server startup error:', error);
+      throw error;
     }
-
-    // Check disk space
-    const hasSpace = await this.fileManager.checkDiskSpace();
-    if (!hasSpace) {
-      console.error('Warning: Disk space may be insufficient');
-    }
-
-    // Get configuration status
-    const configStatus = await this.configManager.getConfigStatus();
-    console.error(`Configuration status: ${configStatus.configured ? 'Ready' : 'Needs setup'}`);
-
-    // Cleanup old images (keep last 50)
-    await this.fileManager.cleanupOldImages(50);
-
-    // Run the server
-    const transport = new StdioServerTransport();
-    await this.server.connect(transport);
-    console.error('MCP OpenAI Image Server running on STDIO');
   }
 }

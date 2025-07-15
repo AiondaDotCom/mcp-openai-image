@@ -1,6 +1,6 @@
 {
   "name": "@aiondadotcom/mcp-openai-image",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "MCP server for OpenAI image generation with STDIO transport",
   "main": "build/index.js",
   "bin": {
