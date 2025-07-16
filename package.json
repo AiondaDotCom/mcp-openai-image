@@ -1,6 +1,6 @@
 {
   "name": "@aiondadotcom/mcp-openai-image",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "MCP server for OpenAI image generation with STDIO transport",
   "main": "build/index.js",
   "bin": {
@@ -16,7 +16,12 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage"
   },
-  "keywords": ["mcp", "openai", "image-generation", "dalle"],
+  "keywords": [
+    "mcp",
+    "openai",
+    "image-generation",
+    "dalle"
+  ],
   "author": "",
   "license": "MIT",
   "publishConfig": {
