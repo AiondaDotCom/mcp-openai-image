@@ -106,7 +106,7 @@ export class MCPImageServer {
             quality: {
               type: 'string',
               enum: [...SUPPORTED_QUALITIES],
-              default: 'auto',
+              default: 'standard',
               description: 'Image quality setting'
             },
             format: {

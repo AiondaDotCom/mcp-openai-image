@@ -74,8 +74,8 @@ mcp-openai-image/
       },
       quality: {
         type: "string",
-        enum: ["low", "medium", "high", "auto"],
-        default: "auto",
+        enum: ["standard", "hd"],
+        default: "standard",
         description: "Image quality setting"
       },
       format: {
@@ -537,7 +537,7 @@ const response = await openai.responses.create({
   tools: [{
     type: "image_generation",
     size: "1024x1536",
-    quality: "high",
+    quality: "hd",
     format: "png",
     background: "transparent"
   }]

@@ -70,7 +70,7 @@ describe('Integrated Tests', () => {
       
       expect(config.model).toBe('gpt-4.1');
       expect(config.defaultSize).toBe('1024x1024');
-      expect(config.defaultQuality).toBe('auto');
+      expect(config.defaultQuality).toBe('standard');
       expect(config.defaultFormat).toBe('png');
       expect(config.createdAt).toBeDefined();
       expect(config.updatedAt).toBeDefined();
@@ -89,7 +89,7 @@ describe('Integrated Tests', () => {
         organization: 'test-org',
         model: 'gpt-4.1',
         defaultSize: '1024x1024',
-        defaultQuality: 'auto',
+        defaultQuality: 'standard',
         defaultFormat: 'png',
         createdAt: '2023-01-01T00:00:00.000Z',
         updatedAt: '2023-01-01T00:00:00.000Z'
@@ -113,7 +113,7 @@ describe('Integrated Tests', () => {
       mockFs.readFile.mockResolvedValue(JSON.stringify({
         model: 'gpt-4.1',
         defaultSize: '1024x1024',
-        defaultQuality: 'auto',
+        defaultQuality: 'standard',
         defaultFormat: 'png',
         createdAt: '2023-01-01T00:00:00.000Z',
         updatedAt: '2023-01-01T00:00:00.000Z'
@@ -138,7 +138,7 @@ describe('Integrated Tests', () => {
         organization: 'test-org',
         model: 'gpt-4.1',
         defaultSize: '1024x1536',
-        defaultQuality: 'high',
+        defaultQuality: 'standard',
         defaultFormat: 'jpeg',
         createdAt: '2023-01-01T00:00:00.000Z',
         updatedAt: '2023-01-01T00:00:00.000Z'
@@ -148,7 +148,7 @@ describe('Integrated Tests', () => {
       expect(await configManager.getOrganization()).toBe('test-org');
       expect(await configManager.getModel()).toBe('gpt-4.1');
       expect(await configManager.getDefaultSize()).toBe('1024x1536');
-      expect(await configManager.getDefaultQuality()).toBe('high');
+      expect(await configManager.getDefaultQuality()).toBe('standard');
       expect(await configManager.getDefaultFormat()).toBe('jpeg');
     });
   });
@@ -295,7 +295,7 @@ describe('Integrated Tests', () => {
       await expect(configManager.saveConfig({
         model: 'gpt-4.1',
         defaultSize: '1024x1024',
-        defaultQuality: 'auto',
+        defaultQuality: 'standard',
         defaultFormat: 'png',
         createdAt: '2023-01-01T00:00:00.000Z',
         updatedAt: '2023-01-01T00:00:00.000Z'

@@ -63,7 +63,7 @@ Generate images using OpenAI's image generation API.
 **Parameters:**
 - `prompt` (required): Image description
 - `size`: Image dimensions (1024x1024, 1024x1536, 1536x1024)
-- `quality`: Image quality (low, medium, high, auto)
+- `quality`: Image quality (standard, hd)
 - `format`: Output format (png, jpeg, webp)
 - `background`: Background setting (transparent, opaque, auto)
 - `compression`: Compression level for JPEG/WebP (0-100)

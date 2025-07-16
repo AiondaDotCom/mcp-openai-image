@@ -242,7 +242,7 @@ export class ImageGenerator {
         prompt: validatedParams.prompt,
         revisedPrompt: imageData.revised_prompt || validatedParams.prompt,
         size: (validatedParams.size || '1024x1024') as '1024x1024' | '1024x1536' | '1536x1024',
-        quality: 'standard' as 'low' | 'medium' | 'high' | 'auto',
+        quality: 'standard' as 'standard' | 'hd',
         format: 'png',
         model: await this.configManager.getModel(),
         timestamp: new Date().toISOString(),
@@ -291,7 +291,7 @@ export class ImageGenerator {
       model: 'dall-e-3',
       prompt: prompt,
       size: (options.size || '1024x1024') as '1024x1024' | '1024x1536' | '1536x1024',
-      quality: (options.quality === 'auto' ? 'standard' : options.quality || 'standard') as 'standard' | 'hd',
+      quality: (options.quality || 'standard') as 'standard' | 'hd',
       n: 1,
       response_format: 'b64_json'
     });
@@ -318,7 +318,7 @@ export class ImageGenerator {
 
     // Set defaults
     validated.size = validated.size || '1024x1024';
-    validated.quality = validated.quality || 'auto';
+    validated.quality = validated.quality || 'standard';
     validated.format = validated.format || 'png';
     validated.background = validated.background || 'auto';
 

@@ -49,7 +49,7 @@ describe('ImageGenerator', () => {
     mockConfigManager.getOrganization.mockResolvedValue('test-org');
     mockConfigManager.getModel.mockResolvedValue('gpt-4.1-mini');
     mockConfigManager.getDefaultSize.mockResolvedValue('1024x1024');
-    mockConfigManager.getDefaultQuality.mockResolvedValue('auto');
+    mockConfigManager.getDefaultQuality.mockResolvedValue('standard');
     mockConfigManager.getDefaultFormat.mockResolvedValue('png');
     mockConfigManager.updateLastUsed.mockResolvedValue();
     
@@ -69,7 +69,7 @@ describe('ImageGenerator', () => {
       const params = {
         prompt: 'test prompt',
         size: '1024x1024',
-        quality: 'auto',
+        quality: 'standard',
         format: 'png'
       };
       
@@ -97,7 +97,7 @@ describe('ImageGenerator', () => {
           prompt: 'test prompt',
           revisedPrompt: 'revised test prompt',
           size: '1024x1024',
-          quality: 'auto',
+          quality: 'standard',
           format: 'png'
         })
       );

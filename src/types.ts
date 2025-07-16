@@ -139,10 +139,8 @@ export const SUPPORTED_SIZES = [
 ] as const;
 
 export const SUPPORTED_QUALITIES = [
-  "low",
-  "medium",
-  "high",
-  "auto"
+  "standard",
+  "hd"
 ] as const;
 
 export const SUPPORTED_FORMATS = [

@@ -29,11 +29,9 @@ describe('Types', () => {
 
   describe('SUPPORTED_QUALITIES', () => {
     it('should contain expected qualities', () => {
-      expect(SUPPORTED_QUALITIES).toContain('low');
-      expect(SUPPORTED_QUALITIES).toContain('medium');
-      expect(SUPPORTED_QUALITIES).toContain('high');
-      expect(SUPPORTED_QUALITIES).toContain('auto');
-      expect(SUPPORTED_QUALITIES).toHaveLength(4);
+      expect(SUPPORTED_QUALITIES).toContain('standard');
+      expect(SUPPORTED_QUALITIES).toContain('hd');
+      expect(SUPPORTED_QUALITIES).toHaveLength(2);
     });
   });
 

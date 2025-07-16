@@ -104,7 +104,7 @@ export class ConfigManager {
     return {
       model: 'gpt-4.1',
       defaultSize: '1024x1024',
-      defaultQuality: 'auto',
+      defaultQuality: 'standard',
       defaultFormat: 'png',
       createdAt: now,
       updatedAt: now

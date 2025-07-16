@@ -52,7 +52,7 @@ Das Projekt verwendet standardmäßig `gpt-4.1` für die Bildgenerierung, da die
 ## Unterstützte Parameter
 
 - **Größen**: 1024x1024, 1024x1536, 1536x1024
-- **Qualität**: low, medium, high, auto
+- **Qualität**: standard, hd
 - **Formate**: png, jpeg, webp
 - **Hintergrund**: transparent, opaque, auto
 

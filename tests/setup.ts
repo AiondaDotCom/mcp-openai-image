@@ -20,7 +20,7 @@ export const createMockImageMetadata = (overrides = {}) => ({
   prompt: 'test prompt',
   revisedPrompt: 'revised test prompt',
   size: '1024x1024',
-  quality: 'auto',
+  quality: 'standard',
   format: 'png',
   model: 'gpt-4.1-mini',
   timestamp: '2023-01-01T00:00:00.000Z',

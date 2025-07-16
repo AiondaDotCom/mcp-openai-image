@@ -58,7 +58,7 @@ describe('ConfigManager', () => {
         apiKey: 'sk-test-key',
         model: 'gpt-4.1-mini',
         defaultSize: '1024x1024',
-        defaultQuality: 'auto',
+        defaultQuality: 'standard',
         defaultFormat: 'png',
         createdAt: '2023-01-01T00:00:00.000Z',
         updatedAt: '2023-01-01T00:00:00.000Z'
@@ -80,7 +80,7 @@ describe('ConfigManager', () => {
 
       expect(result.model).toBe('gpt-4.1');
       expect(result.defaultSize).toBe('1024x1024');
-      expect(result.defaultQuality).toBe('auto');
+      expect(result.defaultQuality).toBe('standard');
       expect(result.defaultFormat).toBe('png');
       expect(result.createdAt).toBeDefined();
       expect(result.updatedAt).toBeDefined();
@@ -92,7 +92,7 @@ describe('ConfigManager', () => {
         apiKey: 'sk-test-key',
         model: 'gpt-4.1-mini',
         defaultSize: '1024x1024',
-        defaultQuality: 'auto',
+        defaultQuality: 'standard',
         defaultFormat: 'png',
         createdAt: '2023-01-01T00:00:00.000Z',
         updatedAt: '2023-01-01T00:00:00.000Z'
@@ -113,7 +113,7 @@ describe('ConfigManager', () => {
         apiKey: 'sk-test-key',
         model: 'gpt-4.1-mini',
         defaultSize: '1024x1024',
-        defaultQuality: 'auto',
+        defaultQuality: 'standard',
         defaultFormat: 'png',
         createdAt: '2023-01-01T00:00:00.000Z',
         updatedAt: '2023-01-01T00:00:00.000Z'
@@ -134,7 +134,7 @@ describe('ConfigManager', () => {
         apiKey: 'sk-test-key',
         model: 'gpt-4.1-mini',
         defaultSize: '1024x1024',
-        defaultQuality: 'auto',
+        defaultQuality: 'standard',
         defaultFormat: 'png',
         createdAt: '2023-01-01T00:00:00.000Z',
         updatedAt: '2023-01-01T00:00:00.000Z'
@@ -152,7 +152,7 @@ describe('ConfigManager', () => {
         apiKey: 'sk-test-key',
         model: 'gpt-4.1-mini',
         defaultSize: '1024x1024',
-        defaultQuality: 'auto',
+        defaultQuality: 'standard',
         defaultFormat: 'png',
         createdAt: '2023-01-01T00:00:00.000Z',
         updatedAt: '2023-01-01T00:00:00.000Z'
@@ -189,7 +189,7 @@ describe('ConfigManager', () => {
         apiKey: 'sk-test-key',
         model: 'gpt-4.1-mini',
         defaultSize: '1024x1024',
-        defaultQuality: 'auto',
+        defaultQuality: 'standard',
         defaultFormat: 'png',
         organization: 'test-org',
         lastUsed: '2023-01-01T00:00:00.000Z',
@@ -212,7 +212,7 @@ describe('ConfigManager', () => {
       mockFs.readFile.mockResolvedValue(JSON.stringify({
         model: 'gpt-4.1-mini',
         defaultSize: '1024x1024',
-        defaultQuality: 'auto',
+        defaultQuality: 'standard',
         defaultFormat: 'png',
         createdAt: '2023-01-01T00:00:00.000Z',
         updatedAt: '2023-01-01T00:00:00.000Z'
@@ -235,7 +235,7 @@ describe('ConfigManager', () => {
       mockFs.readFile.mockResolvedValue(JSON.stringify({
         model: 'gpt-4.1-mini',
         defaultSize: '1024x1024',
-        defaultQuality: 'auto',
+        defaultQuality: 'standard',
         defaultFormat: 'png',
         createdAt: '2023-01-01T00:00:00.000Z',
         updatedAt: '2023-01-01T00:00:00.000Z'
@@ -264,7 +264,7 @@ describe('ConfigManager', () => {
       mockFs.readFile.mockResolvedValue(JSON.stringify({
         model: 'gpt-4.1-mini',
         defaultSize: '1024x1024',
-        defaultQuality: 'auto',
+        defaultQuality: 'standard',
         defaultFormat: 'png',
         createdAt: '2023-01-01T00:00:00.000Z',
         updatedAt: '2023-01-01T00:00:00.000Z'
@@ -289,7 +289,7 @@ describe('ConfigManager', () => {
       mockFs.readFile.mockResolvedValue(JSON.stringify({
         model: 'gpt-4.1-mini',
         defaultSize: '1024x1024',
-        defaultQuality: 'auto',
+        defaultQuality: 'standard',
         defaultFormat: 'png',
         createdAt: '2023-01-01T00:00:00.000Z',
         updatedAt: '2023-01-01T00:00:00.000Z'
@@ -312,7 +312,7 @@ describe('ConfigManager', () => {
         organization: 'test-org',
         model: 'gpt-4.1',
         defaultSize: '1024x1536',
-        defaultQuality: 'high',
+        defaultQuality: 'standard',
         defaultFormat: 'jpeg',
         createdAt: '2023-01-01T00:00:00.000Z',
         updatedAt: '2023-01-01T00:00:00.000Z'
@@ -341,7 +341,7 @@ describe('ConfigManager', () => {
 
     it('should get default quality', async () => {
       const result = await configManager.getDefaultQuality();
-      expect(result).toBe('high');
+      expect(result).toBe('standard');
     });
 
     it('should get default format', async () => {
