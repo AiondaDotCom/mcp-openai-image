@@ -24,7 +24,16 @@ jobs:
         cache: 'npm'
 
     - name: Install dependencies
-      run: npm install
+      run: |
+        npm --version
+        node --version
+        npm install
+
+    - name: List files
+      run: |
+        ls -la
+        ls -la tests/
+        ls -la tests/__mocks__ || true
 
     - name: Build
       run: npm run build
