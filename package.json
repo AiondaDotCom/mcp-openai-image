@@ -12,6 +12,7 @@
     "start": "node build/index.js",
     "dev": "tsx src/index.ts",
     "test": "jest",
+    "test:ci": "jest --config jest.config.ci.cjs",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage"
   },
