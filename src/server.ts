@@ -432,6 +432,15 @@ export class MCPImageServer {
       const status = await this.configManager.getConfigStatus();
       console.error('Configuration status:', JSON.stringify(status, null, 2));
       
+      // Check desktop access
+      try {
+        await this.fileManager.ensureDesktopExists();
+        await this.fileManager.checkDiskSpace();
+        await this.fileManager.cleanupOldImages(50);
+      } catch (error) {
+        console.error('Desktop access warning:', error);
+      }
+      
       // Minimal startup - just connect the server
       const transport = new StdioServerTransport();
       console.error('Starting MCP server...');

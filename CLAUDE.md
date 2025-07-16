@@ -33,7 +33,7 @@ npm run test:coverage
 ## API-Konfiguration
 
 ### OpenAI API-Schlüssel konfigurieren
-Die API-Konfiguration wird automatisch in `config/server-config.json` gespeichert. Diese Datei ist in `.gitignore` enthalten, um Sicherheit zu gewährleisten.
+Die API-Konfiguration wird automatisch in `~/.mcp-openai-image.json` im Home-Verzeichnis des Benutzers gespeichert. Diese Datei ist benutzer-spezifisch und wird nicht mit dem Projekt versioniert.
 
 **Wichtig:** Sowohl der API-Schlüssel als auch die Organisations-ID sind für die Bildgenerierung erforderlich. Die Organisations-ID muss beim Konfigurieren des Servers angegeben werden.
 
@@ -71,8 +71,8 @@ Der Server speichert nur Bilddateien auf dem Desktop. Metadaten werden ausschlie
 
 ## Sicherheit
 
-- API-Schlüssel werden lokal in `config/server-config.json` gespeichert
-- Diese Datei ist in `.gitignore` enthalten und wird nicht versioniert
+- API-Schlüssel werden lokal in `~/.mcp-openai-image.json` im Home-Verzeichnis gespeichert
+- Diese Datei ist benutzer-spezifisch und wird nicht mit dem Projekt versioniert
 - Verwenden Sie niemals API-Schlüssel direkt im Code
 
 ## Deployment

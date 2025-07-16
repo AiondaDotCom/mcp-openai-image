@@ -40,7 +40,7 @@ describe('FileManager', () => {
   });
 
   describe('saveImageToDesktop', () => {
-    it('should save image to desktop with metadata', async () => {
+    it('should save image to desktop', async () => {
       const base64Data = createMockBase64Image();
       const metadata = createMockImageMetadata();
       
@@ -49,18 +49,13 @@ describe('FileManager', () => {
       const result = await fileManager.saveImageToDesktop(base64Data, 'png', metadata);
 
       expect(result).toMatch(/\/home\/user\/Desktop\/openai-image-.*\.png/);
-      expect(mockFs.writeFile).toHaveBeenCalledTimes(2); // Image + metadata
+      expect(mockFs.writeFile).toHaveBeenCalledTimes(1); // Only image, no metadata
       
       // Check image file was written
       expect(mockFs.writeFile).toHaveBeenCalledWith(
         expect.stringMatching(/\.png$/),
         expect.any(Buffer)
       );
-      
-      // Check metadata file was written - check second call
-      const secondCall = mockFs.writeFile.mock.calls[1];
-      expect(secondCall[0]).toMatch(/\.json$/);
-      expect(secondCall[1]).toContain('"prompt": "test prompt"');
     });
 
     it('should handle different image formats', async () => {
@@ -84,19 +79,7 @@ describe('FileManager', () => {
         .rejects.toThrow('Failed to save image to desktop');
     });
 
-    it('should continue if metadata save fails', async () => {
-      const base64Data = createMockBase64Image();
-      const metadata = createMockImageMetadata();
-      
-      mockFs.writeFile
-        .mockResolvedValueOnce() // Image save succeeds
-        .mockRejectedValueOnce(new Error('Metadata save fails')); // Metadata save fails
-      
-      const result = await fileManager.saveImageToDesktop(base64Data, 'png', metadata);
-
-      expect(result).toBeDefined();
-      expect(mockFs.writeFile).toHaveBeenCalledTimes(2);
-    });
+    // Metadata save test removed - no longer supported
   });
 
   describe('generateUniqueFilename', () => {
@@ -120,27 +103,7 @@ describe('FileManager', () => {
     });
   });
 
-  describe('saveMetadata', () => {
-    it('should save metadata to JSON file', async () => {
-      const metadata = createMockImageMetadata();
-      mockFs.writeFile.mockResolvedValue();
-      
-      await fileManager.saveMetadata('/path/to/image.png', metadata);
-      
-      const writeCall = mockFs.writeFile.mock.calls[0];
-      expect(writeCall[0]).toBe('/path/to/image.json');
-      expect(writeCall[1]).toContain('"prompt": "test prompt"');
-    });
-
-    it('should handle write errors gracefully', async () => {
-      const metadata = createMockImageMetadata();
-      mockFs.writeFile.mockRejectedValue(new Error('Write failed'));
-      
-      // Should not throw
-      await expect(fileManager.saveMetadata('/path/to/image.png', metadata))
-        .resolves.toBeUndefined();
-    });
-  });
+  // saveMetadata tests removed - function no longer exists
 
   describe('getDesktopPath', () => {
     it('should return desktop path', () => {
@@ -223,25 +186,7 @@ describe('FileManager', () => {
     });
   });
 
-  describe('loadMetadata', () => {
-    it('should load metadata from JSON file', async () => {
-      const metadata = createMockImageMetadata();
-      mockFs.readFile.mockResolvedValue(JSON.stringify(metadata));
-      
-      const result = await fileManager.loadMetadata('/path/to/image.png');
-      
-      expect(result).toEqual(metadata);
-      expect(mockFs.readFile).toHaveBeenCalledWith('/path/to/image.json', 'utf-8');
-    });
-
-    it('should return null if metadata file not found', async () => {
-      mockFs.readFile.mockRejectedValue(new Error('File not found'));
-      
-      const result = await fileManager.loadMetadata('/path/to/image.png');
-      
-      expect(result).toBeNull();
-    });
-  });
+  // loadMetadata tests removed - function no longer exists
 
   describe('cleanupOldImages', () => {
     it('should delete old images beyond keep count', async () => {
@@ -259,7 +204,7 @@ describe('FileManager', () => {
       await fileManager.cleanupOldImages(3);
       
       // Should delete 2 oldest images (keep 3)
-      expect(mockFs.unlink).toHaveBeenCalledTimes(4); // 2 images + 2 metadata files
+      expect(mockFs.unlink).toHaveBeenCalledTimes(2); // Only images, no metadata files
       expect(mockFs.unlink).toHaveBeenCalledWith(imageFiles[3]);
       expect(mockFs.unlink).toHaveBeenCalledWith(imageFiles[4]);
     });

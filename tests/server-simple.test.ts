@@ -1,17 +1,7 @@
 import { jest, describe, it, expect, beforeEach } from '@jest/globals';
 import { SUPPORTED_MODELS } from '../src/types';
 
-// Mock the MCP SDK completely
-jest.mock('@modelcontextprotocol/sdk/server/index.js', () => ({
-  Server: jest.fn().mockImplementation(() => ({
-    setRequestHandler: jest.fn(),
-    connect: jest.fn()
-  }))
-}));
-
-jest.mock('@modelcontextprotocol/sdk/server/stdio.js', () => ({
-  StdioServerTransport: jest.fn().mockImplementation(() => ({}))
-}));
+// The MCP SDK is mocked via moduleNameMapper in jest.config.cjs
 
 // Mock manager classes
 const mockConfigManager = {
@@ -53,9 +43,9 @@ describe('MCPImageServer - Simple Tests', () => {
     mockConfigManager.getConfigStatus.mockResolvedValue({
       configured: true,
       hasApiKey: true,
-      model: 'gpt-4.1-mini'
+      model: 'gpt-4.1'
     });
-    mockConfigManager.getModel.mockResolvedValue('gpt-4.1-mini');
+    mockConfigManager.getModel.mockResolvedValue('gpt-4.1');
     mockFileManager.ensureDesktopExists.mockResolvedValue();
     mockFileManager.checkDiskSpace.mockResolvedValue(true);
     mockFileManager.cleanupOldImages.mockResolvedValue();

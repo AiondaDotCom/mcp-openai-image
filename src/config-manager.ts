@@ -1,19 +1,15 @@
 import { promises as fs } from 'fs';
-import { join, dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { join } from 'path';
+import { homedir } from 'os';
 import { Config, ConfigStatus, SUPPORTED_MODELS } from './types.js';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 export class ConfigManager {
   private configPath: string;
   private config: Config | null = null;
 
   constructor() {
-    // Use the directory where the executable is located, not process.cwd()
-    const projectRoot = join(__dirname, '..');
-    this.configPath = join(projectRoot, 'config', 'server-config.json');
+    // Store config in user's home directory
+    this.configPath = join(homedir(), '.mcp-openai-image.json');
   }
 
   async loadConfig(): Promise<Config> {
@@ -35,10 +31,6 @@ export class ConfigManager {
 
   async saveConfig(config: Config): Promise<void> {
     try {
-      // Ensure config directory exists
-      const projectRoot = join(__dirname, '..');
-      await fs.mkdir(join(projectRoot, 'config'), { recursive: true });
-      
       config.updatedAt = new Date().toISOString();
       await fs.writeFile(this.configPath, JSON.stringify(config, null, 2));
       this.config = config;

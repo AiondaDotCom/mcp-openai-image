@@ -1,6 +1,7 @@
 import { jest, describe, it, expect, beforeEach, afterEach } from '@jest/globals';
 import { promises as fs } from 'fs';
 import { join } from 'path';
+import { homedir } from 'os';
 import { ConfigManager } from '../src/config-manager';
 import { mockConfigPath } from './setup';
 
@@ -18,6 +19,11 @@ jest.mock('path', () => ({
   join: jest.fn()
 }));
 
+// Mock os module
+jest.mock('os', () => ({
+  homedir: jest.fn()
+}));
+
 // Mock process.cwd
 const originalCwd = process.cwd;
 const mockCwd = jest.fn();
@@ -26,16 +32,18 @@ describe('ConfigManager', () => {
   let configManager: ConfigManager;
   const mockFs = fs as jest.Mocked<typeof fs>;
   const mockPath = join as jest.MockedFunction<typeof join>;
+  const mockHomedir = homedir as jest.MockedFunction<typeof homedir>;
 
   beforeEach(() => {
     jest.clearAllMocks();
     process.cwd = mockCwd;
     mockCwd.mockReturnValue('/test');
+    mockHomedir.mockReturnValue('/home/testuser');
     mockPath.mockImplementation((...args) => {
-      if (args.length === 2 && args[0] === '/test' && args[1] === 'config') {
-        return '/test/config';
+      if (args.length === 2 && args[0] === '/home/testuser' && args[1] === '.mcp-openai-image.json') {
+        return '/home/testuser/.mcp-openai-image.json';
       }
-      return '/test/config/server-config.json';
+      return args.join('/');
     });
     configManager = new ConfigManager();
   });
@@ -61,13 +69,12 @@ describe('ConfigManager', () => {
       const result = await configManager.loadConfig();
 
       expect(result).toEqual(mockConfig);
-      expect(mockFs.readFile).toHaveBeenCalledWith('/test/config/server-config.json', 'utf-8');
+      expect(mockFs.readFile).toHaveBeenCalledWith('/home/testuser/.mcp-openai-image.json', 'utf-8');
     });
 
     it('should create default config when file does not exist', async () => {
       mockFs.readFile.mockRejectedValue(new Error('File not found'));
       mockFs.writeFile.mockResolvedValue();
-      mockFs.mkdir.mockResolvedValue(undefined);
 
       const result = await configManager.loadConfig();
 
@@ -112,16 +119,13 @@ describe('ConfigManager', () => {
         updatedAt: '2023-01-01T00:00:00.000Z'
       };
 
-      mockFs.mkdir.mockResolvedValue(undefined);
       mockFs.writeFile.mockResolvedValue();
 
       await configManager.saveConfig(config);
 
-      expect(mockFs.mkdir).toHaveBeenCalledWith('/test/config', { recursive: true });
       expect(mockFs.writeFile).toHaveBeenCalledWith(
-        '/test/config/server-config.json',
-        expect.stringContaining('"apiKey": "sk-test-key"'),
-        undefined
+        '/home/testuser/.mcp-openai-image.json',
+        expect.stringContaining('"apiKey": "sk-test-key"')
       );
     });
 
@@ -136,7 +140,6 @@ describe('ConfigManager', () => {
         updatedAt: '2023-01-01T00:00:00.000Z'
       };
 
-      mockFs.mkdir.mockResolvedValue(undefined);
       mockFs.writeFile.mockResolvedValue();
 
       await configManager.saveConfig(config);
@@ -155,7 +158,7 @@ describe('ConfigManager', () => {
         updatedAt: '2023-01-01T00:00:00.000Z'
       };
 
-      mockFs.mkdir.mockRejectedValue(new Error('Permission denied'));
+      mockFs.writeFile.mockRejectedValue(new Error('Permission denied'));
 
       await expect(configManager.saveConfig(config)).rejects.toThrow('Failed to save configuration');
     });
@@ -237,20 +240,17 @@ describe('ConfigManager', () => {
         createdAt: '2023-01-01T00:00:00.000Z',
         updatedAt: '2023-01-01T00:00:00.000Z'
       }));
-      mockFs.mkdir.mockResolvedValue(undefined);
       mockFs.writeFile.mockResolvedValue();
 
       await configManager.updateApiKey('sk-new-key', 'new-org');
 
       expect(mockFs.writeFile).toHaveBeenCalledWith(
-        '/test/config/server-config.json',
+        '/home/testuser/.mcp-openai-image.json',
         expect.stringContaining('"apiKey": "sk-new-key"'),
-        undefined
       );
       expect(mockFs.writeFile).toHaveBeenCalledWith(
-        '/test/config/server-config.json',
-        expect.stringContaining('"organization":"new-org"'),
-        undefined
+        '/home/testuser/.mcp-openai-image.json',
+        expect.stringContaining('"organization": "new-org"')
       );
     });
 
@@ -269,15 +269,13 @@ describe('ConfigManager', () => {
         createdAt: '2023-01-01T00:00:00.000Z',
         updatedAt: '2023-01-01T00:00:00.000Z'
       }));
-      mockFs.mkdir.mockResolvedValue(undefined);
       mockFs.writeFile.mockResolvedValue();
 
       await configManager.updateModel('gpt-4.1');
 
       expect(mockFs.writeFile).toHaveBeenCalledWith(
-        '/test/config/server-config.json',
+        '/home/testuser/.mcp-openai-image.json',
         expect.stringContaining('"model": "gpt-4.1"'),
-        undefined
       );
     });
 
@@ -296,15 +294,13 @@ describe('ConfigManager', () => {
         createdAt: '2023-01-01T00:00:00.000Z',
         updatedAt: '2023-01-01T00:00:00.000Z'
       }));
-      mockFs.mkdir.mockResolvedValue(undefined);
       mockFs.writeFile.mockResolvedValue();
 
       await configManager.updateLastUsed();
 
       expect(mockFs.writeFile).toHaveBeenCalledWith(
-        '/test/config/server-config.json',
+        '/home/testuser/.mcp-openai-image.json',
         expect.stringContaining('"lastUsed": "'),
-        undefined
       );
     });
   });

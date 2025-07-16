@@ -21,8 +21,8 @@ describe('Types', () => {
   describe('SUPPORTED_SIZES', () => {
     it('should contain expected sizes', () => {
       expect(SUPPORTED_SIZES).toContain('1024x1024');
-      expect(SUPPORTED_SIZES).toContain('1024x1536');
-      expect(SUPPORTED_SIZES).toContain('1536x1024');
+      expect(SUPPORTED_SIZES).toContain('1024x1792');
+      expect(SUPPORTED_SIZES).toContain('1792x1024');
       expect(SUPPORTED_SIZES).toHaveLength(3);
     });
   });

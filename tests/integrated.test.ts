@@ -68,7 +68,7 @@ describe('Integrated Tests', () => {
 
       const config = await configManager.loadConfig();
       
-      expect(config.model).toBe('gpt-4.1-mini');
+      expect(config.model).toBe('gpt-4.1');
       expect(config.defaultSize).toBe('1024x1024');
       expect(config.defaultQuality).toBe('auto');
       expect(config.defaultFormat).toBe('png');
@@ -80,14 +80,14 @@ describe('Integrated Tests', () => {
       
       // Check the second call for API key update
       const apiKeyCall = mockFs.writeFile.mock.calls[1];
-      expect(apiKeyCall[0]).toBe('/test/config/server-config.json');
+      expect(apiKeyCall[0]).toBe('/home/user/.mcp-openai-image.json');
       expect(apiKeyCall[1]).toContain('"apiKey": "sk-test-key"');
 
       // Test configuration status
       mockFs.readFile.mockResolvedValue(JSON.stringify({
         apiKey: 'sk-test-key',
         organization: 'test-org',
-        model: 'gpt-4.1-mini',
+        model: 'gpt-4.1',
         defaultSize: '1024x1024',
         defaultQuality: 'auto',
         defaultFormat: 'png',
@@ -98,7 +98,7 @@ describe('Integrated Tests', () => {
       const status = await configManager.getConfigStatus();
       expect(status.configured).toBe(true);
       expect(status.hasApiKey).toBe(true);
-      expect(status.model).toBe('gpt-4.1-mini');
+      expect(status.model).toBe('gpt-4.1');
       expect(status.organization).toBe('test-org');
     });
 
@@ -111,7 +111,7 @@ describe('Integrated Tests', () => {
 
     it('should handle model updates', async () => {
       mockFs.readFile.mockResolvedValue(JSON.stringify({
-        model: 'gpt-4.1-mini',
+        model: 'gpt-4.1',
         defaultSize: '1024x1024',
         defaultQuality: 'auto',
         defaultFormat: 'png',
@@ -124,7 +124,7 @@ describe('Integrated Tests', () => {
       await configManager.updateModel('gpt-4.1');
       
       const modelCall = mockFs.writeFile.mock.calls[0];
-      expect(modelCall[0]).toBe('/test/config/server-config.json');
+      expect(modelCall[0]).toBe('/home/user/.mcp-openai-image.json');
       expect(modelCall[1]).toContain('"model": "gpt-4.1"');
     });
 
@@ -169,17 +169,12 @@ describe('Integrated Tests', () => {
       const result = await fileManager.saveImageToDesktop(base64Data, 'png', metadata);
 
       expect(result).toMatch(/\/home\/user\/Desktop\/openai-image-.*\.png/);
-      expect(mockFs.writeFile).toHaveBeenCalledTimes(2); // Image + metadata
+      expect(mockFs.writeFile).toHaveBeenCalledTimes(1); // Only image, no metadata
       
       // Check that image buffer was written
       const imageCall = mockFs.writeFile.mock.calls[0];
       expect(imageCall[0]).toMatch(/\.png$/);
       expect(imageCall[1]).toBeInstanceOf(Buffer);
-      
-      // Check that metadata was written
-      const metadataCall = mockFs.writeFile.mock.calls[1];
-      expect(metadataCall[0]).toMatch(/\.json$/);
-      expect(metadataCall[1]).toContain('"prompt": "test prompt"');
     });
 
     it('should generate unique filenames', async () => {
@@ -264,30 +259,18 @@ describe('Integrated Tests', () => {
       
       await fileManager.cleanupOldImages(3);
       
-      // Should delete 2 oldest images + their metadata files = 4 calls
-      expect(mockFs.unlink).toHaveBeenCalledTimes(4);
+      // Should delete 2 oldest images (no metadata files anymore)
+      expect(mockFs.unlink).toHaveBeenCalledTimes(2);
     });
 
-    it('should load and save metadata', async () => {
-      const metadata = createMockImageMetadata();
-      mockFs.readFile.mockResolvedValue(JSON.stringify(metadata));
-      
-      const result = await fileManager.loadMetadata('/path/to/image.png');
-      
-      expect(result).toEqual(metadata);
-      expect(mockFs.readFile).toHaveBeenCalledWith('/path/to/image.json', 'utf-8');
-      
-      // Test metadata not found
-      mockFs.readFile.mockRejectedValue(new Error('File not found'));
-      expect(await fileManager.loadMetadata('/path/to/image.png')).toBeNull();
-    });
+    // Metadata loading removed - no longer supported
   });
 
   describe('Types and Constants', () => {
     it('should have correct supported models', () => {
       expect(SUPPORTED_MODELS).toEqual([
-        'gpt-4.1-mini',
         'gpt-4.1',
+        'gpt-4.1-mini',
         'gpt-4o',
         'gpt-4o-mini'
       ]);
@@ -296,8 +279,8 @@ describe('Integrated Tests', () => {
     it('should have correct supported sizes', () => {
       expect(SUPPORTED_SIZES).toEqual([
         '1024x1024',
-        '1024x1536',
-        '1536x1024'
+        '1024x1792',
+        '1792x1024'
       ]);
     });
   });
@@ -310,7 +293,7 @@ describe('Integrated Tests', () => {
       mockFs.mkdir.mockRejectedValue(new Error('Permission denied'));
       
       await expect(configManager.saveConfig({
-        model: 'gpt-4.1-mini',
+        model: 'gpt-4.1',
         defaultSize: '1024x1024',
         defaultQuality: 'auto',
         defaultFormat: 'png',
@@ -333,15 +316,6 @@ describe('Integrated Tests', () => {
       )).rejects.toThrow('Failed to save image to desktop');
     });
 
-    it('should handle metadata save errors gracefully', async () => {
-      const fileManager = new FileManager();
-      const metadata = createMockImageMetadata();
-      
-      mockFs.writeFile.mockRejectedValue(new Error('Write failed'));
-      
-      // Should not throw
-      await expect(fileManager.saveMetadata('/path/to/image.png', metadata))
-        .resolves.toBeUndefined();
-    });
+    // Metadata save removed - no longer supported
   });
 });
