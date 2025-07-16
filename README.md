@@ -1,5 +1,8 @@
 # MCP OpenAI Image Generation Server
 
+[![Tests](https://github.com/AiondaDotCom/mcp-openai-image/actions/workflows/test.yml/badge.svg)](https://github.com/AiondaDotCom/mcp-openai-image/actions/workflows/test.yml)
+[![npm version](https://badge.fury.io/js/@aiondadotcom%2Fmcp-openai-image.svg)](https://badge.fury.io/js/@aiondadotcom%2Fmcp-openai-image)
+
 <div align="center">
   <img src="logo.png" alt="MCP OpenAI Image Server Logo" width="200" height="200">
 </div>
